@@ -1,10 +1,10 @@
-import express from "express";
+import express from 'express';
 // import bodyParser from 'body-parser';
 // import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 // import { makeExecutableSchema } from 'graphql-tools';
 // import path from 'path';
 // import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
-import cors from "cors";
+import cors from 'cors';
 // import jwt from 'jsonwebtoken';
 
 // import models from './models';
@@ -25,7 +25,7 @@ const PORT = 4000;
 
 const app = express();
 
-app.use(cors("*"));
+app.use(cors('*'));
 
 // const addUser = async (req, res, next) => {
 //   const token = req.headers['x-token'];
