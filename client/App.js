@@ -3,18 +3,21 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import MainLayout from './layouts/MainLayout';
-
 import ChatList from './layouts/ChatList';
+import Login from './layouts/Login';
+import SignUp from './layouts/SignUp';
 
 class App extends Component {
   render() {
     return (
       <Router>
-        <MainLayout>
-          <Switch>
-            <Route path="/chatlist" exact component={ChatList} />
-          </Switch>
-        </MainLayout>
+        <Switch>
+          <Route path="/" exact component={Login} />
+          <Route path="/signup" exact component={SignUp} />
+          <MainLayout>
+            <Route path="/chatlist" component={ChatList} />
+          </MainLayout>
+        </Switch>
       </Router>
     );
   }
