@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Grid, Header } from 'semantic-ui-react';
 
 import MainHeader from './MainHeader';
+import LeftColumn from './LeftColumn';
 
 class Layout extends React.Component {
   render() {
@@ -23,9 +24,7 @@ class Layout extends React.Component {
               stretched
               style={{ flex: '1 1 auto', padding: 0, background: 'white' }}
             >
-              <Grid.Column width={5} style={{ borderRight: '2px solid #E9EBED' }}>
-                Left column
-              </Grid.Column>
+              <LeftColumn />
 
               <Grid.Column width={11} style={{}}>
                 Grid Colimn 2 {this.props.children}
