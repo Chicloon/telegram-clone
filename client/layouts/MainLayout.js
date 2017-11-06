@@ -3,6 +3,7 @@ import { Container, Grid, Header } from 'semantic-ui-react';
 
 import MainHeader from './MainHeader';
 import LeftColumn from './LeftColumn';
+import RightColumn from './RightColumn';
 
 class Layout extends React.Component {
   render() {
@@ -15,6 +16,7 @@ class Layout extends React.Component {
               display: 'flex',
               flexFlow: 'column',
               margin: '0 -36px',
+              paddingBottom: '24px',
             }}
           >
             <MainHeader />
@@ -22,13 +24,21 @@ class Layout extends React.Component {
             <Grid.Row
               columns={2}
               stretched
-              style={{ flex: '1 1 auto', padding: 0, background: 'white' }}
+              style={{
+                flex: '1 1 auto',
+                padding: 0,
+                background: 'white',
+                boxShadow: '0px 1px 0 #dfe5ec',
+                borderRadius: '0 0 3px 3px',
+                borderLeft: '1px solid #dfe5ec',
+                borderRight: '1px solid #dfe5ec',
+                borderBottom: '1px solid #d2dbe3',
+                overflow: 'hidden',
+              }}
             >
               <LeftColumn />
 
-              <Grid.Column width={11} style={{}}>
-                Grid Colimn 2 {this.props.children}
-              </Grid.Column>
+              <RightColumn>{this.props.children}</RightColumn>
             </Grid.Row>
           </Grid>
         </Container>

@@ -1,5 +1,5 @@
 import React from 'react';
 
-const Chatlist = () => <div>This a home component</div>;
+const Chatlist = () => <div>Chat messages will be here</div>;
 
 export default Chatlist;
