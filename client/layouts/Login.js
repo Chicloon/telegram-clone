@@ -12,12 +12,7 @@ import normalizeErrors from './normalizeErrors';
 class Login extends React.Component {
   render() {
     const {
-      values,
-      errors,
-      handleChange,
-      handleBlur,
-      handleSubmit,
-      dirty,
+      values, errors, handleChange, handleBlur, handleSubmit, dirty,
     } = this.props;
 
     const errorsValues = Object.values(errors);
@@ -63,7 +58,13 @@ class Login extends React.Component {
                   placeholder="Password"
                   type="password"
                 />
-                <Button disabled={!dirty || errorsValues.length !== 0} color="teal" fluid size="large" type="submit">
+                <Button
+                  disabled={!dirty || errorsValues.length !== 0}
+                  color="teal"
+                  fluid
+                  size="large"
+                  type="submit"
+                >
                   Login
                 </Button>
               </Segment>
@@ -110,20 +111,25 @@ export default compose(
       password: Yup.string().required('Password is required!'),
     }),
 
-    handleSubmit: async (values, { props: { mutate }, setSubmitting, setErrors }) => {
+    handleSubmit: async (values, { props: { mutate, history }, setSubmitting, setErrors }) => {
       const response = await mutate({
         variables: { email: values.email, password: values.password },
       });
+      console.log(response);
 
-      const { ok, errors } = response.data.login;
+      const {
+        ok, errors, token, refreshToken,
+      } = response.data.login;
       if (ok) {
+        localStorage.setItem('token', token);
+        localStorage.setItem('refreshToken', refreshToken);
         setSubmitting(false);
+        history.push('/chatlist');
       } else {
         console.log(errors);
         setErrors(normalizeErrors(errors));
         setSubmitting(false);
-      }
-      setSubmitting(false);
+      }     
     },
   }),
 )(Login);

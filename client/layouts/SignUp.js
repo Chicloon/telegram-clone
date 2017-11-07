@@ -12,12 +12,7 @@ import normalizeErrors from './normalizeErrors';
 class SignUp extends React.Component {
   render() {
     const {
-      dirty,
-      values,
-      errors,
-      handleChange,
-      handleBlur,
-      handleSubmit,
+      dirty, values, errors, handleChange, handleBlur, handleSubmit,
     } = this.props;
 
     const errorsValues = Object.values(errors);
@@ -61,7 +56,6 @@ class SignUp extends React.Component {
                   icon="user"
                   iconPosition="left"
                   placeholder="Username"
-                 
                 />
                 <Form.Input
                   fluid
@@ -75,7 +69,13 @@ class SignUp extends React.Component {
                   placeholder="Password"
                   type="password"
                 />
-                <Button disabled={!dirty || errorsValues.length !== 0} color="teal" fluid size="large" type="submit">
+                <Button
+                  disabled={!dirty || errorsValues.length !== 0}
+                  color="teal"
+                  fluid
+                  size="large"
+                  type="submit"
+                >
                   SignUp
                 </Button>
               </Segment>
@@ -88,7 +88,7 @@ class SignUp extends React.Component {
               </Message>
             )}
             <Message>
-             Have account? <Link to="/">Sign Up</Link>
+              Have account? <Link to="/">Sign Up</Link>
             </Message>
           </Grid.Column>
         </Grid>
@@ -98,13 +98,15 @@ class SignUp extends React.Component {
 }
 
 const reigsterMutation = gql`
-mutation($username: String!, $email: String!, $password:String!) {
-  register(username: $username, email: $email, password: $password) {
-      ok    
+  mutation($username: String!, $email: String!, $password: String!) {
+    register(username: $username, email: $email, password: $password) {
+      ok
       errors {
-        path
         message
+        path
       }
+      token
+      refreshToken
     }
   }
 `;
@@ -119,28 +121,32 @@ export default compose(
         .required('Email is required!'),
       password: Yup.string()
         .min(5)
-        .max(100)      
+        .max(100)
         .required('Password is required!'),
       username: Yup.string()
-        .min(3, "Username must be a least ${min} chars long")
-        .max(25, "Username must less than ${max} chars long")
-        .matches(/^[a-zA-Z0-9]*$/, "The username can only contain letters and numbers")
+        .min(3, 'Username must be a least ${min} chars long')
+        .max(25, 'Username must less than ${max} chars long')
+        .matches(/^[a-zA-Z0-9]*$/, 'The username can only contain letters and numbers')
         .required('Username is required!'),
     }),
 
-    handleSubmit: async (values, { props: { mutate }, setSubmitting, setErrors }) => {
+    handleSubmit: async (values, { props: { mutate, history }, setSubmitting, setErrors }) => {
       const response = await mutate({
         variables: { email: values.email, password: values.password, username: values.username },
       });
       console.log(response);
-      const { ok, errors } = response.data.register;
+      const {
+        ok, errors, token, refreshToken,
+      } = response.data.register;
       if (ok) {
+        localStorage.setItem('token', token);
+        localStorage.setItem('refreshToken', refreshToken);
         setSubmitting(false);
+        history.push('/chatlist');
       } else {
         setErrors(normalizeErrors(errors));
         setSubmitting(false);
       }
-      setSubmitting(false);
     },
   }),
 )(SignUp);
