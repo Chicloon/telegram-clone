@@ -1,26 +1,27 @@
 import React from 'react';
 import { withFormik } from 'formik';
 import Yup from 'yup';
-import { Link } from 'react-router-dom';
+import { graphql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
 
+import { Link } from 'react-router-dom';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
+
+import normalizeErrors from './normalizeErrors';
 
 class Login extends React.Component {
   render() {
     const {
       values,
-      touched,
       errors,
-      dirty,
-      isSubmitting,
       handleChange,
       handleBlur,
       handleSubmit,
-      handleReset,
+      dirty,
     } = this.props;
 
     const errorsValues = Object.values(errors);
-    console.log(errors, errorsValues);
+
     return (
       <div className="login-form">
         <style>
@@ -41,7 +42,7 @@ class Login extends React.Component {
                   id="email"
                   name="email"
                   fluid
-                  icon="user"
+                  icon="mail"
                   iconPosition="left"
                   placeholder="E-mail address"
                   onChange={handleChange}
@@ -62,7 +63,7 @@ class Login extends React.Component {
                   placeholder="Password"
                   type="password"
                 />
-                <Button color="teal" fluid size="large" type="submit">
+                <Button disabled={!dirty || errorsValues.length !== 0} color="teal" fluid size="large" type="submit">
                   Login
                 </Button>
               </Segment>
@@ -84,28 +85,45 @@ class Login extends React.Component {
   }
 }
 
-export default withFormik({
-  mapPropsToValues: () => ({ email: '', password: '' }),
-  validationSchema: Yup.object().shape({
-    email: Yup.string()
-      .email('Invalid email address')
-      .required('Email is required!'),
-    password: Yup.string().required('Password is required!'),
-  }),
-  // validate: (values) => {
-  //   const errors = {};
-  //   if (!values.email) {
-  //     errors.email = 'Required';
-  //   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-  //     errors.email = 'Invalid email address';
-  //   }
-  //   console.log(errors);
-  //   return errors;
-  // },
-  handleSubmit: (values, { setSubmitting }) => {
-    console.log(values);
+const loginMutation = gql`
+  mutation($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      ok
+      token
+      refreshToken
+      errors {
+        path
+        message
+      }
+    }
+  }
+`;
 
-    setSubmitting(false);
-  },
-  displayName: 'LoginForm', // helps with React DevTools
-})(Login);
+export default compose(
+  graphql(loginMutation),
+  withFormik({
+    mapPropsToValues: () => ({ email: '', password: '' }),
+    validationSchema: Yup.object().shape({
+      email: Yup.string()
+        .email('Invalid email address')
+        .required('Email is required!'),
+      password: Yup.string().required('Password is required!'),
+    }),
+
+    handleSubmit: async (values, { props: { mutate }, setSubmitting, setErrors }) => {
+      const response = await mutate({
+        variables: { email: values.email, password: values.password },
+      });
+
+      const { ok, errors } = response.data.login;
+      if (ok) {
+        setSubmitting(false);
+      } else {
+        console.log(errors);
+        setErrors(normalizeErrors(errors));
+        setSubmitting(false);
+      }
+      setSubmitting(false);
+    },
+  }),
+)(Login);

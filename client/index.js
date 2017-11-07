@@ -10,7 +10,7 @@ import { ApolloLink } from 'apollo-link';
 
 import App from './App';
 
-const GRAPHQLPORT = 'http://localhost:4000/graphq';
+const GRAPHQLPORT = 'http://localhost:4000/graphql';
 
 const httpLink = createHttpLink({ uri: GRAPHQLPORT });
 
