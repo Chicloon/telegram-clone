@@ -134,7 +134,6 @@ export default compose(
       const response = await mutate({
         variables: { email: values.email, password: values.password, username: values.username },
       });
-      console.log(response);
       const {
         ok, errors, token, refreshToken,
       } = response.data.register;
@@ -142,7 +141,7 @@ export default compose(
         localStorage.setItem('token', token);
         localStorage.setItem('refreshToken', refreshToken);
         setSubmitting(false);
-        history.push('/chatlist');
+        history.push('/');
       } else {
         setErrors(normalizeErrors(errors));
         setSubmitting(false);

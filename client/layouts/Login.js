@@ -114,8 +114,7 @@ export default compose(
     handleSubmit: async (values, { props: { mutate, history }, setSubmitting, setErrors }) => {
       const response = await mutate({
         variables: { email: values.email, password: values.password },
-      });
-      console.log(response);
+      });   
 
       const {
         ok, errors, token, refreshToken,
@@ -124,12 +123,11 @@ export default compose(
         localStorage.setItem('token', token);
         localStorage.setItem('refreshToken', refreshToken);
         setSubmitting(false);
-        history.push('/chatlist');
-      } else {
-        console.log(errors);
+        history.push('/');
+      } else {      
         setErrors(normalizeErrors(errors));
         setSubmitting(false);
-      }     
+      }
     },
   }),
 )(Login);
