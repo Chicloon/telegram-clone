@@ -1,37 +1,50 @@
 import React from 'react';
 import { Grid, Input, Icon } from 'semantic-ui-react';
 
-const channelsList = [
-  {
-    id: 1,
-    name: 'Bob',
-    lastMessage: 'hello',
-  },
-  {
-    id: 2,
-    name: 'Jake',
-    lastMessage: 'Hola',
-  },
-];
+import ColumnHeaderWrapper from './ColumnHeaderWrapper';
+
+import ChannelsList from '../components/ChannelsList/';
+import LeftMenu from './LeftMenu';
+import styled from 'styled-components';
+
+const LeftHeader = styled.div`
+  align-self: center;
+  flex-grow: 1;
+  cursor: pointer;
+  padding: 0 12px;
+`;
 
 class LeftComumn extends React.Component {
+  state = {
+    showMenu: false,
+  };
+
+  menuTrigger = () => {  
+    this.setState(state => ({ showMenu: !state.showMenu }));
+  };
+
   render() {
+    const { showMenu } = this.state;
     return (
-      <Grid.Column width={5} style={{ borderRight: '2px solid #E9EBED' }}>
-        <Input placeholder="Search..." iconPosition="left" style={{ flexGrow: 0, padding: '12px' }}>
-          <Icon name="search" flipped="horizontally" style={{ left: 'auto' }} />
-          <input style={{ background: '#F2F2F2' }} />
-        </Input>
-        <div>
-          <ul>
-            {channelsList.map(e => (
-              <li key={e.id}>
-                <a href="#">
-                  {e.name}: {e.lastMessage}
-                </a>
-              </li>
-            ))}
-          </ul>
+      <Grid.Column width={5} style={{ padding: 0 }}>
+        <ColumnHeaderWrapper>
+          {showMenu && <LeftMenu menuTrigger={this.menuTrigger} />}
+          <LeftHeader onClick={this.menuTrigger}>
+            <Icon name={showMenu ? "remove" :  "sidebar"} size="large" style={{ margin: '0 40px 0 0', cursor: 'pointer' }} />
+            <span>Telegram-clone</span>
+          </LeftHeader>
+        </ColumnHeaderWrapper>
+        <div style={{ borderRight: '2px solid #E9EBED' }}>
+          <Input
+            fluid
+            placeholder="Search..."
+            iconPosition="left"
+            style={{ flexGrow: 0, padding: '12px' }}
+          >
+            <Icon name="search" flipped="horizontally" style={{ left: 'auto' }} />
+            <input style={{ background: '#F2F2F2' }} />
+          </Input>
+          <ChannelsList />
         </div>
       </Grid.Column>
     );

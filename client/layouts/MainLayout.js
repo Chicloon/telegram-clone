@@ -1,7 +1,6 @@
 import React from 'react';
-import { Container, Grid, Header } from 'semantic-ui-react';
+import { Container, Grid } from 'semantic-ui-react';
 
-import MainHeader from './MainHeader';
 import LeftColumn from './LeftColumn';
 import RightColumn from './RightColumn';
 
@@ -19,8 +18,6 @@ class Layout extends React.Component {
               paddingBottom: '24px',
             }}
           >
-            <MainHeader />
-
             <Grid.Row
               columns={2}
               stretched

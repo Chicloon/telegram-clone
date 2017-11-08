@@ -49,6 +49,7 @@
     "semantic-ui-css": "^2.2.12",
     "semantic-ui-react": "^0.75.1",
     "sequelize": "^4.22.5",
+    "styled-components": "^2.2.3",
     "yup": "^0.23.0"
   },
   "devDependencies": {
