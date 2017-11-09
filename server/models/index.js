@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize';
 
-const sequelize = new Sequelize('telegram', 'efim', '123', {
+const sequelize = new Sequelize('telegram', 'postgres', 'postgres', {
   dialect: 'postgres',
   host: 'localhost',
   port: 5432,

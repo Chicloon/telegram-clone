@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 import { Link } from 'react-router-dom';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
 
-import normalizeErrors from './normalizeErrors';
+import normalizeErrors from '../normalizeErrors';
 
 class SignUp extends React.Component {
   render() {

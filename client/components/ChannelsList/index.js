@@ -1,9 +1,10 @@
 import React from 'react';
 import { Comment } from 'semantic-ui-react';
-import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
 import Channel from './Channel';
+
+import { AllChannelsQuery } from '../queries';
 
 const channelsList = [
   {
@@ -31,14 +32,5 @@ class ChannelsList extends React.Component {
     );
   }
 }
-
-const AllChannelsQuery = gql`
-  {
-    allChannels {
-      id
-      name
-    }
-  }
-`;
 
 export default graphql(AllChannelsQuery)(ChannelsList);

@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Menu, Label, Input, Icon } from 'semantic-ui-react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -19,36 +20,42 @@ const MenuWrapper = styled.ul`
     padding: 11px 19px 10px 21px;
     &: hover {
       background: #f2f6fa;
-    }    
+    }
   }
 `;
 
-const LeftMenu = ({newChannelModalTrigger, logoutTrigger}) => (
-  <MenuWrapper>
-    <li onClick={newChannelModalTrigger}>
-      <Icon style={{marginRight: '38px', marginTop: '3px'}} name="users" /> <span> New channel </span>
-    </li>
-    <li onClick={logoutTrigger}>
-      <Icon style={{marginRight: '38px', marginTop: '3px'}} name="sign out" /> <span> LogOut </span>
-    </li>
-  </MenuWrapper>
+class LeftMenu extends React.Component {
+  componentWillMount() {
+    // add event listener for clicks
+    document.addEventListener('click', this.handleClick, false);
+  }
 
-  // <Menu vertical stu>
-  //   <Menu.Item name="inbox">
-  //     <Label color="teal">1</Label>
-  //     Inbox
-  //   </Menu.Item>
+  componentWillUnmount() {
+    // make sure you remove the listener when the component is destroyed
+    document.removeEventListener('click', this.handleClick, false);
+  }
 
-  //   <Menu.Item name="spam">
-  //     <Label>51</Label>
-  //     Spam
-  //   </Menu.Item>
+  handleClick = (e) => {
+    // eslint-disable-next-line react/no-find-dom-node
+    if (!ReactDOM.findDOMNode(this).contains(e.target)) {
+      this.props.menuTrigger();
+    }
+  };
 
-  //   <Menu.Item name="updates">
-  //     <Label>1</Label>
-  //     Updates
-  //   </Menu.Item>
-  // </Menu>
-);
-
+  render() {
+    const { newChannelModalTrigger, logoutTrigger } = this.props;
+    return (
+      <MenuWrapper>
+        <li onClick={newChannelModalTrigger}>
+          <Icon style={{ marginRight: '38px', marginTop: '3px' }} name="users" />{' '}
+          <span> New channel </span>
+        </li>
+        <li onClick={logoutTrigger}>
+          <Icon style={{ marginRight: '38px', marginTop: '3px' }} name="sign out" />{' '}
+          <span> LogOut </span>
+        </li>
+      </MenuWrapper>
+    );
+  }
+}
 export default LeftMenu;

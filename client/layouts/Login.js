@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 import { Link } from 'react-router-dom';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
 
-import normalizeErrors from './normalizeErrors';
+import normalizeErrors from '../normalizeErrors';
 
 class Login extends React.Component {
   render() {
@@ -114,7 +114,7 @@ export default compose(
     handleSubmit: async (values, { props: { mutate, history }, setSubmitting, setErrors }) => {
       const response = await mutate({
         variables: { email: values.email, password: values.password },
-      });   
+      });
 
       const {
         ok, errors, token, refreshToken,
@@ -124,7 +124,7 @@ export default compose(
         localStorage.setItem('refreshToken', refreshToken);
         setSubmitting(false);
         history.push('/');
-      } else {      
+      } else {
         setErrors(normalizeErrors(errors));
         setSubmitting(false);
       }

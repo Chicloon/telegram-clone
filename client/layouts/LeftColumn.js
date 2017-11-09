@@ -1,11 +1,12 @@
 import React from 'react';
-import { Grid, Input, Icon, Modal } from 'semantic-ui-react';
+import { Grid, Input, Icon, Modal, Button } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
-import ColumnHeaderWrapper from './ColumnHeaderWrapper';
+import styled from 'styled-components';
 
+import ColumnHeaderWrapper from './ColumnHeaderWrapper';
 import ChannelsList from '../components/ChannelsList/';
 import LeftMenu from './LeftMenu';
-import styled from 'styled-components';
+import CreateChannelModal from '../components/MenuModals/CreateChannelModal';
 
 const LeftHeader = styled.div`
   align-self: center;
@@ -20,34 +21,43 @@ class LeftComumn extends React.Component {
     newChannelModal: false,
   };
 
-  menuTrigger = () => {  
+  menuTrigger = () => {
     this.setState(state => ({ showMenu: !state.showMenu }));
   };
 
   logoutTrigger = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
-    this.props.history.push('/');   
-  }
+    this.props.history.push('/');
+  };
 
   newChannelModalTrigger = () => {
-    this.menuTrigger();
     this.setState(state => ({ newChannelModal: !state.newChannelModal }));
-  }
+  };
 
   render() {
-    const { showMenu, newChannelModal} = this.state;
+    const { showMenu, newChannelModal } = this.state;
     return (
       <Grid.Column width={5} style={{ padding: 0 }}>
         <div>
           <ColumnHeaderWrapper>
-            {showMenu && <LeftMenu logoutTrigger={this.logoutTrigger} newChannelModalTrigger={this.newChannelModalTrigger} />}
+            {showMenu && (
+              <LeftMenu
+                menuTrigger={this.menuTrigger}
+                logoutTrigger={this.logoutTrigger}
+                newChannelModalTrigger={this.newChannelModalTrigger}
+              />
+            )}
             <LeftHeader onClick={this.menuTrigger}>
-              <Icon name={showMenu ? "remove" :  "sidebar"} size="large" style={{ margin: '0 40px 0 0', cursor: 'pointer' }} />
+              <Icon
+                name={showMenu ? 'remove' : 'sidebar'}
+                size="large"
+                style={{ margin: '0 40px 0 0', cursor: 'pointer' }}
+              />
               <span>Telegram-clone</span>
             </LeftHeader>
           </ColumnHeaderWrapper>
-          <div style={{ borderRight: '2px solid #E9EBED' }}>
+          <div style={{ borderRight: '2px solid #E9EBED', height: '100%' }}>
             <Input
               fluid
               placeholder="Search..."
@@ -60,12 +70,7 @@ class LeftComumn extends React.Component {
             <ChannelsList />
           </div>
         </div>
-        <Modal size="tiny" open={newChannelModal} onClose={this.newChannelModalTrigger} style={{minHeight: '90vh'}} >          
-            <ColumnHeaderWrapper>
-              <span style={{flexGrow: 1, paddingLeft: '24px'}}> New Channel</span> <span onClick={this.newChannelModalTrigger} style={{ cursor: 'pointer', paddingRight: '24px'}}> Close </span>
-            </ColumnHeaderWrapper>
-            Modal content          
-        </Modal>
+        <CreateChannelModal onClose={this.newChannelModalTrigger} open={newChannelModal} />
       </Grid.Column>
     );
   }
