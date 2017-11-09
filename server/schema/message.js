@@ -13,6 +13,10 @@ export default `
     errors: [Error!]
   }
 
+  type Query {
+    chanelMessages(channelId: Int!): [Message!]!
+  }
+
   type Mutation {
     createMessage(channelId: Int!, text: String!): MessageResponse!
   }

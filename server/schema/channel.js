@@ -16,7 +16,7 @@ export default `
   }
 
   type Query {
-    allChannels: [Channel!]!
+    allChannels: [Channel!]! 
   }
 
   type Mutation {

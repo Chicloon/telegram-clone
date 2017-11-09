@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Input, Icon, Modal, Button } from 'semantic-ui-react';
+import { Grid, Input, Icon } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 

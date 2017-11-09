@@ -35,7 +35,7 @@ class Layout extends React.Component {
             >
               <LeftColumn />
 
-              <RightColumn>{this.props.children}</RightColumn>
+              {this.props.children}
             </Grid.Row>
           </Grid>
         </Container>

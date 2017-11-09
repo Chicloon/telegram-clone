@@ -4,9 +4,9 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import decode from 'jwt-decode';
 
 import MainLayout from './layouts/MainLayout';
-import ChatList from './layouts/ChatList';
 import Login from './layouts/Login';
 import SignUp from './layouts/SignUp';
+import RightColumn from './layouts/RightColumn';
 
 const isAuthenticated = () => {
   const token = localStorage.getItem('token');
@@ -45,7 +45,7 @@ class App extends Component {
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={SignUp} />
           <MainLayout>
-            <PrivateRoute path="/" component={ChatList} />
+            <PrivateRoute path="/:channelId" exact component={RightColumn} />
           </MainLayout>
         </Switch>
       </Router>
