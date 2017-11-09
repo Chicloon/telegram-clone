@@ -9,4 +9,7 @@ export default styled.div`
   flex-direction: row !important;
   justify-content: flex-start !important;
   display: flex !important;
+  & > * {
+    align-self: center;
+  }
 `;

@@ -8,8 +8,8 @@ class RightColumn extends React.Component {
     return (
       <Grid.Column width={11} style={{ padding: 0 }}>
         <ColumnHeaderWrapper>
-          <div style={{ alignSelf: 'center', flexGrow: 2 }}> Channel name </div>
-          <div style={{ alignSelf: 'center', display: 'flex', justifyContent: 'flex-end' }}>
+          <div style={{flexGrow: 2 }}> Channel name </div>
+          <div style={{display: 'flex', justifyContent: 'flex-end' }}>
             <Icon name="search" size="large" style={{ cursor: 'pointer' }} />
             <Icon
               name="ellipsis vertical"
