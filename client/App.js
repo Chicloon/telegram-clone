@@ -45,6 +45,7 @@ class App extends Component {
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={SignUp} />
           <MainLayout>
+            <PrivateRoute path="/" exact component={RightColumn} />
             <PrivateRoute path="/:channelId" exact component={RightColumn} />
           </MainLayout>
         </Switch>

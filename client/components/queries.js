@@ -8,3 +8,26 @@ export const AllChannelsQuery = gql`
     }
   }
 `;
+
+export const ChannelMessagesQuery = gql`
+  query($channelId: Int!) {
+    channelMessages(channelId: $channelId) {
+      id
+      text
+      created_at
+      user {
+        id
+        username
+      }
+    }
+  }
+`;
+
+export const ChannelInfoQuery = gql`
+  query($channelId: Int!) {
+    channelInfo(channelId: $channelId) {
+      id
+      name
+    }
+  }
+`;

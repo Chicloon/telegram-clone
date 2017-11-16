@@ -1,8 +1,9 @@
 import formatErrors from '../formatErrors';
+import requireAuth from '../permissions';
 
 export default {
   Query: {
-    chanelMessages: async (parent, { channelId }, { models }) => {
+    channelMessages: async (parent, { channelId }, { models }) => {
       const messages = await models.Message.findAll(
         { order: [['created_at', 'ASC']], where: { channelId } },
         { raw: true },

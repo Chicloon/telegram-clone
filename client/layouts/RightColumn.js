@@ -5,23 +5,16 @@ import { compose } from 'react-apollo';
 import ColumnHeaderWrapper from './ColumnHeaderWrapper';
 
 import SendMessage from '../components/SendMessage';
+import MessagesList from '../components/MessagesList';
+import RightHeader from '../components/RightHeader';
 
 class RightColumn extends React.Component {
   render() {
     return (
       <Grid.Column width={11} style={{ padding: 0 }}>
-        <ColumnHeaderWrapper>
-          <div style={{ flexGrow: 2 }}> Channel name </div>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Icon name="search" size="large" style={{ cursor: 'pointer' }} />
-            <Icon
-              name="ellipsis vertical"
-              size="large"
-              style={{ marginLeft: '20px', cursor: 'pointer' }}
-            />
-          </div>
-        </ColumnHeaderWrapper>
-        <div>Grid Colimn 2: {this.props.match.params.channelId}</div>
+        <RightHeader channelId={this.props.match.params.channelId} />
+
+        <MessagesList channelId={this.props.match.params.channelId} />
         <SendMessage />
       </Grid.Column>
     );

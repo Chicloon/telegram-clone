@@ -14,7 +14,7 @@ export default `
   }
 
   type Query {
-    chanelMessages(channelId: Int!): [Message!]!
+    channelMessages(channelId: Int!): [Message!]!
   }
 
   type Mutation {

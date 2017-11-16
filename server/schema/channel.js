@@ -17,6 +17,7 @@ export default `
 
   type Query {
     allChannels: [Channel!]! 
+    channelInfo(channelId: Int!): Channel!
   }
 
   type Mutation {
