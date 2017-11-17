@@ -6,6 +6,9 @@ import path from 'path';
 import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
+import { createServer } from 'http';
+import { execute, subscribe } from 'graphql';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
 
 import models from './models';
 import { refreshTokens } from './auth';
@@ -65,9 +68,44 @@ app.use(
   })),
 );
 
-app.use('/graphiql', graphiqlExpress({ endpointURL: graphqlEndpoint }));
+app.use(
+  '/graphiql',
+  graphiqlExpress({
+    endpointURL: graphqlEndpoint,
+    subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`,
+  }),
+);
+
+const server = createServer(app);
 
 models.sequelize.sync({}).then(() => {
-  app.listen(PORT);
+  server.listen(PORT, () => {
+    // eslint-disable-next-line no-new
+    new SubscriptionServer(
+      {
+        execute,
+        subscribe,
+        schema,
+        onConnect: async ({ token, refreshToken }, webSocket) => {
+          if (token && refreshToken) {
+            try {
+              const { user } = jwt.verify(token, SECRET);
+              return { models, user };
+            } catch (err) {
+              const newTokens = await refreshTokens(token, refreshToken, models, SECRET, SECRET2);
+              return { models, user: newTokens.user };
+            }
+          }
+
+          return { models };
+        },
+      },
+      {
+        server,
+        path: '/subscriptions',
+      },
+    );
+  });
 });
+
 console.log(`server running on port ${PORT}`);

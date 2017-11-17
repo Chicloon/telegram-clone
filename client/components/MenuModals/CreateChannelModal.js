@@ -130,6 +130,7 @@ export default compose(
       const { ok, errors } = response.data.createChannel;
       if (ok) {
         onClose();
+        resetForm();
         setSubmitting(false);
       } else {
         setErrors(normalizeErrors(errors));

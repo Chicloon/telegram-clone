@@ -8,6 +8,8 @@ import Login from './layouts/Login';
 import SignUp from './layouts/SignUp';
 import RightColumn from './layouts/RightColumn';
 
+import ChatList from './layouts/ChatList';
+
 const isAuthenticated = () => {
   const token = localStorage.getItem('token');
   const refreshToken = localStorage.getItem('refreshToken');
@@ -45,7 +47,7 @@ class App extends Component {
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={SignUp} />
           <MainLayout>
-            <PrivateRoute path="/" exact component={RightColumn} />
+            <PrivateRoute path="/" exact component={ChatList} />
             <PrivateRoute path="/:channelId" exact component={RightColumn} />
           </MainLayout>
         </Switch>

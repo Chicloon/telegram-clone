@@ -33,6 +33,7 @@
     "formik": "^0.10.3",
     "graphql": "^0.11.7",
     "graphql-date": "^1.0.3",
+    "graphql-subscriptions": "^0.5.4",
     "graphql-tag": "^2.5.0",
     "graphql-tools": "^2.7.2",
     "jsonwebtoken": "^8.1.0",
@@ -50,6 +51,7 @@
     "semantic-ui-react": "^0.75.1",
     "sequelize": "^4.22.5",
     "styled-components": "^2.2.3",
+    "subscriptions-transport-ws": "^0.9.1",
     "yup": "^0.23.0"
   },
   "devDependencies": {

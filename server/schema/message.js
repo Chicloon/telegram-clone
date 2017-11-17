@@ -7,18 +7,16 @@ export default `
     created_at: Date
   }
 
-  type MessageResponse {
-    ok: Boolean!
-    message: Message
-    errors: [Error!]
-  }
-
   type Query {
     channelMessages(channelId: Int!): [Message!]!
   }
 
   type Mutation {
-    createMessage(channelId: Int!, text: String!): MessageResponse!
+    createMessage(channelId: Int!, text: String!): Boolean!
+  }
+
+  type Subscription {
+    newChannelMessage(channelId: Int!): Message!
   }
 
 `;

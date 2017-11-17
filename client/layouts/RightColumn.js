@@ -15,7 +15,7 @@ class RightColumn extends React.Component {
         <RightHeader channelId={this.props.match.params.channelId} />
 
         <MessagesList channelId={this.props.match.params.channelId} />
-        <SendMessage />
+        <SendMessage channelId={this.props.match.params.channelId} />
       </Grid.Column>
     );
   }
