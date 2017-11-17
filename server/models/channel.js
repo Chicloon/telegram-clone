@@ -19,10 +19,6 @@ export default (sequelize, DataTypes) => {
         field: 'channel_id',
       },
     });
-    // 1: M
-    Channel.belongsTo(models.User, {
-      foreignKey: 'owner',
-    });
   };
 
   return Channel;
