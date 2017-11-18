@@ -16,6 +16,7 @@ const SendMessage = ({
           handleSubmit(e);
         }
       }}
+      autoComplete="off"
       placeholder="Write a message..."
       id="message"
       name="message"
