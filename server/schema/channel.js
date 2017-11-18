@@ -6,7 +6,7 @@ export default `
     public: Boolean!
     messages: [Message!]!
     users: [User!]!
-    created_at: Date
+    created_at: String
   }
 
   type ChannelResponse {

@@ -4,7 +4,7 @@ export default `
     text: String!
     user: User!
     channel: Channel!
-    created_at: Date
+    created_at: String
   }
 
   type Query {

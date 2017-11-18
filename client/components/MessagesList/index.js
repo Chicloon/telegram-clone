@@ -2,7 +2,10 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import { Comment } from 'semantic-ui-react';
+
 import { ChannelMessagesQuery } from '../queries';
+import Message from './Message';
 
 const newChannelMessageSubscription = gql`
   subscription($channelId: Int!) {
@@ -80,9 +83,11 @@ class MessagesList extends React.Component {
         }}
         style={{ height: '1vh', overflow: 'auto' }}
       >
-        <ul>
-          {channelMessages.map(message => <li key={`message-${message.id}`}>{message.text}</li>)}
-        </ul>
+        <Comment.Group>
+          {channelMessages.map(message => (
+            <Message key={`message-${message.id}`} message={message} />
+          ))}
+        </Comment.Group>
       </div>
     );
   }
