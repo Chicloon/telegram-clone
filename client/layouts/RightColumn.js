@@ -1,8 +1,9 @@
 import React from 'react';
 import { Grid, Input, Icon } from 'semantic-ui-react';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'react-apollo';
-import ColumnHeaderWrapper from './ColumnHeaderWrapper';
+import { Redirect } from 'react-router-dom';
+import { graphql } from 'react-apollo';
+
+import { ChannelInfoQuery } from '../components/queries';
 
 import SendMessage from '../components/SendMessage';
 import MessagesList from '../components/MessagesList';
@@ -10,17 +11,30 @@ import RightHeader from '../components/RightHeader';
 
 class RightColumn extends React.Component {
   render() {
-    return (
-      <Grid.Column width={11} style={{ padding: 0 }}>
-        <RightHeader channelId={this.props.match.params.channelId} />
+    const { data: { loading, channelInfo }, match: { params: { channelId } } } = this.props;
+    if (!loading && !channelInfo) {
+      return <Redirect to="/" />;
+    }
 
-        <MessagesList channelId={this.props.match.params.channelId} />
-        <SendMessage channelId={this.props.match.params.channelId} />
+    return loading ? (
+      <div />
+    ) : (
+      <Grid.Column width={11} style={{ padding: 0 }}>
+        <RightHeader channelId={channelId} />
+
+        <MessagesList channelId={channelId} />
+        <SendMessage channelId={channelId} />
       </Grid.Column>
     );
   }
 }
 
-export default RightColumn;
+export default graphql(ChannelInfoQuery, {
+  options: props => ({
+    variables: {
+      channelId: props.match.params.channelId,
+    },
+  }),
+})(RightColumn);
 
 // export default withRouter(RightColumn);
