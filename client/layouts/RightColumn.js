@@ -16,14 +16,11 @@ class RightColumn extends React.Component {
       return <Redirect to="/" />;
     }
 
-    return loading ? (
-      <div />
-    ) : (
+    return (
       <Grid.Column width={11} style={{ padding: 0 }}>
         <RightHeader channelId={channelId} />
-
-        <MessagesList channelId={channelId} />
-        <SendMessage channelId={channelId} />
+        {channelInfo && <MessagesList channelId={channelId} />}
+        {channelInfo && <SendMessage channelId={channelId} />}
       </Grid.Column>
     );
   }
@@ -36,5 +33,3 @@ export default graphql(ChannelInfoQuery, {
     },
   }),
 })(RightColumn);
-
-// export default withRouter(RightColumn);

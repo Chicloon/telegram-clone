@@ -3,14 +3,15 @@ import { graphql } from 'react-apollo';
 import { Icon } from 'semantic-ui-react';
 import ColumnHeaderWrapper from '../../layouts/ColumnHeaderWrapper';
 
-import { ChannelInfoQuery } from '../queries';
+// import { ChannelInfoQuery } from '../queries';
+import ChannelInfo from './ChannelInfo';
 
 class RightHeader extends React.Component {
   render() {
-    const { data: { loading, channelInfo } } = this.props;
+    const { channelId } = this.props;
     return (
       <ColumnHeaderWrapper>
-        <div style={{ flexGrow: 2 }}> Channel name: {!loading && channelInfo.name}</div>
+        <ChannelInfo channelId={channelId} />
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Icon name="search" size="large" style={{ cursor: 'pointer' }} />
           <Icon
@@ -24,11 +25,13 @@ class RightHeader extends React.Component {
   }
 }
 
-export default graphql(ChannelInfoQuery, {
-  options: ({ channelId }) => ({
-    variables: {
-      channelId,
-    },
-    fetchPolicy: 'network-only',
-  }),
-})(RightHeader);
+// export default graphql(ChannelInfoQuery, {
+//   options: ({ channelId }) => ({
+//     variables: {
+//       channelId,
+//     },
+//     fetchPolicy: 'network-only',
+//   }),
+// })(RightHeader);
+
+export default RightHeader;
