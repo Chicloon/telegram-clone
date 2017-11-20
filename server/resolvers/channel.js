@@ -27,5 +27,20 @@ export default {
         };
       }
     }),
+    addChannelMember: requireAuth.createResolver(async (parent, { channelId }, { models, user }) => {
+      try {
+        const member = await models.Member.findOne({ where: { userId: user.id, channelId } });
+        if (!member) {
+          console.log('adding user to channel members');
+          models.Member.create({ userId: user.id, channelId, role: 1 });
+        } else {
+          console.log('user already channel member');
+        }
+        return true;
+      } catch (err) {
+        console.log(err);
+        return false;
+      }
+    }),
   },
 };

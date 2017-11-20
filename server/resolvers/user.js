@@ -13,7 +13,7 @@ export default {
       try {
         const user = await models.User.create(args);
         const [token, refreshToken] = await createTokens(user, SECRET, SECRET2);
-        console.log('----tokens', token, refreshToken);
+        // console.log('----tokens', token, refreshToken);
         return {
           ok: true,
           user,

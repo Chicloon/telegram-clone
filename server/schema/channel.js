@@ -6,7 +6,7 @@ export default `
     public: Boolean!
     messages: [Message!]!
     users: [User!]!
-    created_at: String
+    created_at: Date
   }
 
   type ChannelResponse {
@@ -22,5 +22,6 @@ export default `
 
   type Mutation {
     createChannel(name: String!, public: Boolean=false): ChannelResponse!
+    addChannelMember(channelId: Int!): Boolean!
   }
 `;
