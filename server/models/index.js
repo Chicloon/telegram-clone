@@ -1,30 +1,31 @@
 import Sequelize from 'sequelize';
 
-// const sequelize = new Sequelize('telegram', 'postgres', 'postgres', {
-//   dialect: 'postgres',
-//   host: 'localhost',
-//   port: 5432,
-//   operatorsAliases: Sequelize.Op,
-//   define: {
-//     underscored: true,
-//   },
-// });
-
-const sequelize = new Sequelize('telegram', 'postgres', 'postgres', {
+const sequelize = new Sequelize('telegram', 'efim', '123', {
   dialect: 'postgres',
   host: 'localhost',
-  port: 5433,
+  port: 5432,
   operatorsAliases: Sequelize.Op,
   define: {
     underscored: true,
   },
 });
 
+// const sequelize = new Sequelize('telegram', 'postgres', 'postgres', {
+//   dialect: 'postgres',
+//   host: 'localhost',
+//   port: 5433,
+//   operatorsAliases: Sequelize.Op,
+//   define: {
+//     underscored: true,
+//   },
+// });
+
 const models = {
   User: sequelize.import('./user'),
   Channel: sequelize.import('./channel'),
   Message: sequelize.import('./message'),
   Member: sequelize.import('./member'),
+  DirectMessage: sequelize.import('./directMessage'),
 };
 
 Object.keys(models).forEach((modelName) => {
