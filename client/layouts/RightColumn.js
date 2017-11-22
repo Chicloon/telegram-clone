@@ -11,26 +11,32 @@ import MessagesList from '../components/MessagesList';
 import RightHeader from '../components/RightHeader';
 
 class RightColumn extends React.Component {
-  componentWillUpdate() {
-    this.props.mutate({
-      variables: {
-        channelId: this.props.match.params.channelId,
-      },
-    });
+  componentWillMount() {
+    this.props
+      .mutate({
+        variables: {
+          channelId: this.props.match.params.channelId,
+        },
+      })
+      .then(({ data }) => {       
+        this.mutationData = data;
+      });
   }
 
-  render() {
+  render() {  
     const { data: { loading, channelInfo }, match: { params: { channelId } } } = this.props;
     if (!loading && !channelInfo) {
       return <Redirect to="/" />;
     }
 
-    return (
+    return this.mutationData ? (
       <Grid.Column width={11} style={{ padding: 0 }}>
         <RightHeader channelId={channelId} />
         {channelInfo && <MessagesList channelId={channelId} />}
         {channelInfo && <SendMessage channelId={channelId} />}
       </Grid.Column>
+    ) : (
+      <div />
     );
   }
 }
@@ -49,5 +55,7 @@ export default compose(
       },
     }),
   }),
-  graphql(addChanelMemberMutation),
+  graphql(addChanelMemberMutation, {
+    // name: 'mutationData',
+  }),
 )(RightColumn);

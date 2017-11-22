@@ -26,7 +26,7 @@ class ChannelsList extends React.Component {
       return null;
     }
     return (
-      <Comment.Group>
+      <Comment.Group style={{ height: '83vh', overflow: 'auto' }}>
         {allChannels.map(channel => <Channel key={`channel-${channel.id}`} channel={channel} />)}
       </Comment.Group>
     );
