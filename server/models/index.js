@@ -26,6 +26,7 @@ const models = {
   Message: sequelize.import('./message'),
   Member: sequelize.import('./member'),
   DirectMessage: sequelize.import('./directMessage'),
+  Online: sequelize.import('./online'),
 };
 
 Object.keys(models).forEach((modelName) => {
