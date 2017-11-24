@@ -12,7 +12,6 @@ import { SubscriptionServer } from 'subscriptions-transport-ws';
 
 import models from './models';
 import { refreshTokens } from './auth';
-import { connect } from 'net';
 
 const PORT = 4000;
 const SECRET = 'asiodfhoi1hoi23jnl1kejd';
@@ -30,8 +29,8 @@ const schema = makeExecutableSchema({
 const app = express();
 
 app.use(cors('*'));
-let currentUser;
 
+let currentUser;
 const addUser = async (req, res, next) => {
   const token = req.headers['x-token'];
   // console.log('============= token', token);
@@ -85,37 +84,26 @@ const server = createServer(app);
 
 models.sequelize.sync({}).then(() => {
   server.listen(PORT, () => {
-    const userOnline = 'userOnline';
     // eslint-disable-next-line no-new
     new SubscriptionServer(
       {
         execute,
         subscribe,
         schema,
-        // onConnect: (connectionParams, webSocket) => {
-        //   console.log('=========connectionParams', connectionParams, webSocket);
-        // },
         onConnect: async ({ token, refreshToken }, webSocket) => {
-          console.log('===================user connected', currentUser);
-
-          // const jwtResponse = await jwt.verify('asdf', SECRET);
-          // console.log('jwt', jwtResponse);
           if (token && refreshToken) {
-            console.log(models);
             try {
-              const { user } = await jwt.verify(token, SECRET);
-              console.log('user connected', user);
-              const online = await models.Online.crate({
-                userId: user.id,
-                online: true,
+              const { user } = jwt.verify(token, SECRET);
+              models.User.findOne({ where: { id: user.id } }).then((res) => {
+                res.set({ online: true });
+                res.save().then((result) => {
+                  console.log('-------------user online', user);
+                });
               });
-              console.log('Online is', 'WTF????!');
-              // console.log(, online);
-              console.log('Online is', { models, user });
-              // return { models, user };
-              return;
+              return { models, user };
             } catch (err) {
               const newTokens = await refreshTokens(token, refreshToken, models, SECRET, SECRET2);
+
               return { models, user: newTokens.user };
             }
           }
@@ -123,15 +111,14 @@ models.sequelize.sync({}).then(() => {
           return { models };
         },
         onDisconnect: (webSocket) => {
-          console.log('======this', currentUser);
-          // models.Online.findOne({ where: { userId: currentUser.id } }).then((user) => {
-          //   console.log(user.online);
-          //   // console.log(user);
-          //   user.up
-          // });
-          models.Online.update({ online: false }, { where: { userId: 1 } });
-          // const { user } = await jwt.verify(token, SECRET);
-          console.log('user disconnected');
+          console.log('current User is ------', currentUser);
+          currentUser &&
+            models.User.findOne({ where: { id: currentUser.id } }).then((res) => {
+              res.set({ online: false });
+              res.save().then((result) => {
+                console.log('-------------user offline', currentUser);
+              });
+            });
         },
       },
       {
