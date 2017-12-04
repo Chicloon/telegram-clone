@@ -41,11 +41,11 @@ export default {
       models.DirectMessage.findOne({ where: { id: directMessageId } }),
   },
   Mutation: {
-    // createMessage: requireAuth.createResolver(async (parent, args, { models, user }) => {
-    createMessage: async (parent, args, { models, user }) => {
+    createMessage: requireAuth.createResolver(async (parent, args, { models, user }) => {
+      // createMessage: async (parent, args, { models, user }) => {
       try {
         // const message = await models.Message.create({ ...args, userId: user.id });
-        const message = await models.Message.create({ ...args, userId: 1 });
+        const message = await models.Message.create({ ...args, userId: user.id });
         // if (args.channelId) {
         //   console.log('================== channelId', args.channelId, args.directMessageId);
         // }
@@ -73,6 +73,6 @@ export default {
         console.log(err);
         return false;
       }
-    },
+    }),
   },
 };

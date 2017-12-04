@@ -9,7 +9,7 @@ type DirectMessage {
 }
 
 type Query {
-  direcMessagesList: [DirectMessage!]!
+  directMessagesList: [DirectMessage!]!
 }
 
 type Mutation {  
