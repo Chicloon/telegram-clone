@@ -3,16 +3,18 @@ export default `
     id: Int!
     text: String!
     user: User!
-    channel: Channel!
+    channel: Channel
+    directMessage: DirectMessage
     created_at: Date
   }
 
   type Query {
     channelMessages(channelId: Int!): [Message!]!
+    directMessages(directMessageId: Int!): [Message!]!
   }
 
   type Mutation {
-    createMessage(channelId: Int!, text: String!): Boolean!
+    createMessage(channelId: Int, directMessageId: Int, text: String!): Boolean!
   }
 
   type Subscription {

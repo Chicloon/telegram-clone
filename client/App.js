@@ -35,7 +35,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
             pathname: '/login',
           }}
         />
-      ))}
+      ))
+    }
   />
 );
 

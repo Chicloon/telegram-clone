@@ -1,18 +1,19 @@
 export default `
 type DirectMessage {
   id: Int!
-  text: String!
-  sender: User!
+  title: User!
+  messages: [Message!]
+  senderId: Int!
   receiverId: Int!
   created_at: Date!
 }
 
 type Query {
-  directMessage(receiverId: Int!): [DirectMessage!]!
+  direcMessagesList: [DirectMessage!]!
 }
 
-type Mutation {
-  createDirectMessage(receiverId: Int!, text: String!): Boolean!
+type Mutation {  
+  createDirectMessage(receiverId: Int!): Boolean!
 }
 
 type Subscription {

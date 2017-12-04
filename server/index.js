@@ -102,10 +102,14 @@ models.sequelize.sync({}).then(() => {
             webSocket.id = user.id;
             console.log(webSocket.id);
             try {
-              const { user } = await jwt.verify(token, SECRET);
+              // const { user } = await jwt.verify(token, SECRET);
+              console.log('user on No error');
+              console.log(user);
               return { models, user };
             } catch (err) {
               const newTokens = await refreshTokens(token, refreshToken, models, SECRET, SECRET2);
+              console.log('user on Error');
+              console.log(newTokens.user);
               return { models, user: newTokens.user };
             }
           }

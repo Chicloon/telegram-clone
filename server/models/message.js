@@ -11,6 +11,12 @@ export default (sequelize, DataTypes) => {
         field: 'channel_id',
       },
     });
+    Message.belongsTo(models.DirectMessage, {
+      foreignKey: {
+        name: 'directMessageId',
+        field: 'directmessage_id',
+      },
+    });
     Message.belongsTo(models.User, {
       foreignKey: {
         name: 'userId',
