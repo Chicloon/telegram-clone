@@ -4,33 +4,25 @@ import { graphql } from 'react-apollo';
 
 import Channel from './Channel';
 
-import { AllChannelsQuery } from '../queries';
-
-const channelsList = [
-  {
-    id: 1,
-    name: 'Bob',
-    lastMessage: 'hello',
-  },
-  {
-    id: 2,
-    name: 'Jake',
-    lastMessage: 'Hola',
-  },
-];
+import { UserChannelsQuery } from '../queries';
 
 class ChannelsList extends React.Component {
   render() {
-    const { loading, allChannels } = this.props.data;
+    const { channels, data: { loading, userChannels } } = this.props;
+
     if (loading) {
       return null;
     }
     return (
       <Comment.Group>
-        {allChannels.map(channel => <Channel key={`channel-${channel.id}`} channel={channel} />)}
+        {channels.map(channel => <Channel key={`channel-${channel.id}`} channel={channel} />)}
       </Comment.Group>
     );
   }
 }
 
-export default graphql(AllChannelsQuery)(ChannelsList);
+export default graphql(UserChannelsQuery, {
+  options: {
+    fetchPolicy: 'network-only',
+  },
+})(ChannelsList);

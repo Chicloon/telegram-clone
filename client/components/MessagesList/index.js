@@ -61,7 +61,7 @@ class MessagesList extends React.Component {
 
         return {
           ...prev,
-          channelMessages: [...prev.channelMessages, subscriptionData.data.newChannelMessage],
+          channelMessages: [...prev.channelMessages, subscriptionData.newChannelMessage],
         };
       },
     });

@@ -1,8 +1,30 @@
 import gql from 'graphql-tag';
 
+export const MeQuerry = gql`
+  {
+    me {
+      id
+      username
+      channels {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export const AllChannelsQuery = gql`
   {
     allChannels {
+      id
+      name
+    }
+  }
+`;
+
+export const UserChannelsQuery = gql`
+  {
+    userChannels {
       id
       name
     }

@@ -16,7 +16,8 @@ export default `
   }
 
   type Query {
-    allChannels: [Channel!]! 
+    allChannels: [Channel!]!
+    userChannels: [Channel!]!
     channelInfo(channelId: Int!): Channel!
   }
 

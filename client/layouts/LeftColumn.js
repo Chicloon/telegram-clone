@@ -37,6 +37,7 @@ class LeftComumn extends React.Component {
 
   render() {
     const { showMenu, newChannelModal } = this.state;
+    const { channels } = this.props;
     return (
       <Grid.Column width={5} style={{ padding: 0 }}>
         <div>
@@ -67,7 +68,7 @@ class LeftComumn extends React.Component {
               <Icon name="search" flipped="horizontally" style={{ left: 'auto' }} />
               <input style={{ background: '#F2F2F2' }} />
             </Input>
-            <ChannelsList />
+            <ChannelsList channels={channels} />
           </div>
         </div>
         <CreateChannelModal onClose={this.newChannelModalTrigger} open={newChannelModal} />

@@ -19,7 +19,7 @@ export default createResolver((parent, args, { user }) => {
 
 export const requiresMemberAccess = createResolver(async (parent, { channelId }, { user, models }) => {
   if (!user || !user.id) {
-    throw new Error('Not authenticated');
+    throw new Error('Member not authenticated');
   }
   // check if part of the team
 

@@ -1,14 +1,28 @@
 import formatErrors from '../formatErrors';
-import requireAuth from '../permissions';
+import requiresAuth from '../permissions';
 
 export default {
   Query: {
     allChannels: (parent, args, { models }) => models.Channel.findAll(),
-    channelInfo: (parent, { channelId }, { models }) =>
-      models.Channel.findOne({ where: { id: channelId } }),
+    userChannels: requiresAuth.createResolver(async (parent, args, { user, models }) => {
+      // userChannels: async (parent, args, { user, models }) => {
+      const channels = await models.sequelize.query(
+        `select *
+        from channels join members on channels.id = members.channel_id
+        where user_id=?`,
+        {
+          replacements: [user.id],
+          model: models.Channel,
+          raw: true,
+        },
+      );
+      return channels;
+    }),
+    channelInfo: requiresAuth.createResolver((parent, { channelId }, { models }) =>
+      models.Channel.findOne({ where: { id: channelId } })),
   },
   Mutation: {
-    createChannel: requireAuth.createResolver(async (parent, args, { models, user }) => {
+    createChannel: requiresAuth.createResolver(async (parent, args, { models, user }) => {
       try {
         const response = await models.sequelize.transaction(async () => {
           const channel = await models.Channel.create(args);
@@ -27,7 +41,7 @@ export default {
         };
       }
     }),
-    addChannelMember: requireAuth.createResolver(async (parent, { channelId }, { models, user }) => {
+    addChannelMember: requiresAuth.createResolver(async (parent, { channelId }, { models, user }) => {
       try {
         const member = await models.Member.findOne({ where: { userId: user.id, channelId } });
         if (!member) {
