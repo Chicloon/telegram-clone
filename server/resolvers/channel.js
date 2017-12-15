@@ -43,17 +43,31 @@ export default {
     }),
     addChannelMember: requiresAuth.createResolver(async (parent, { channelId }, { models, user }) => {
       try {
-        const member = await models.Member.findOne({ where: { userId: user.id, channelId } });
-        if (!member) {
-          console.log('adding user to channel members');
-          models.Member.create({ userId: user.id, channelId, role: 1 });
-        } else {
-          console.log('user already channel member');
-        }
-        return true;
+        const response = await models.sequelize.transaction(async () => {
+          const member = await models.Member.findOne({ where: { userId: user.id, channelId } });
+          const channel = await models.Channel.findOne({ where: { id: channelId } });
+          if (!member) {
+            console.log('adding user to channel members');
+            models.Member.create({ userId: user.id, channelId, role: 1 });
+          } else {
+            console.log('user already channel member');
+            return {
+              ok: false,
+              channel,
+            };
+          }
+          return {
+            channel,
+            ok: true,
+          };
+        });
+        return response;
       } catch (err) {
         console.log(err);
-        return false;
+        return {
+          ok: false,
+          errors: formatErrors(err, models),
+        };
       }
     }),
   },

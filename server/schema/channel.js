@@ -23,6 +23,6 @@ export default `
 
   type Mutation {
     createChannel(name: String!, public: Boolean=false): ChannelResponse!
-    addChannelMember(channelId: Int!): Boolean!
+    addChannelMember(channelId: Int!): ChannelResponse!
   }
 `;

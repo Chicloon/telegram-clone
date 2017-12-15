@@ -40,7 +40,7 @@ const afterwareLink = new ApolloLink((operation, forward) =>
 
 const httpLinkWithMiddleware = afterwareLink.concat(middlewareLink.concat(httpLink));
 
-const wsLink = new WebSocketLink({
+export const wsLink = new WebSocketLink({
   uri: SUBSCRIPTIONPATH,
   options: {
     reconnect: true,

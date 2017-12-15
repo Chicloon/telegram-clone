@@ -10,7 +10,7 @@ import normalizeErrors from '../../normalizeErrors';
 
 import ColumnHeaderWrapper from '../../layouts/ColumnHeaderWrapper';
 
-import { AllChannelsQuery } from '../queries';
+import { MeQuerry } from '../queries';
 
 const CreateChannelButtonsWrapper = styled.div`
   padding-bottom: 12;
@@ -121,9 +121,9 @@ export default compose(
             return;
           }
 
-          const data = store.readQuery({ query: AllChannelsQuery });
-          data.allChannels.push(channel);
-          store.writeQuery({ query: AllChannelsQuery, data });
+          const data = store.readQuery({ query: MeQuerry });
+          data.me.channels.push(channel);
+          store.writeQuery({ query: MeQuerry, data });
         },
       });
 
