@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
 
 import normalizeErrors from '../normalizeErrors';
+import { wsLink } from '../apollo';
 
 class Login extends React.Component {
   render() {
@@ -122,6 +123,7 @@ export default compose(
       if (ok) {
         localStorage.setItem('token', token);
         localStorage.setItem('refreshToken', refreshToken);
+        wsLink.subscriptionClient.tryReconnect();
         setSubmitting(false);
         history.push('/');
       } else {

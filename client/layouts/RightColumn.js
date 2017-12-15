@@ -4,7 +4,6 @@ import { Redirect } from 'react-router-dom';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { wsLink } from '../apollo';
 import { ChannelInfoQuery, MeQuerry } from '../components/queries';
 
 import SendMessage from '../components/SendMessage';
@@ -29,11 +28,6 @@ class RightColumn extends React.Component {
       },
     });
   }
-
-  // componentDidUpdate() {
-  //   console.log('did updated');
-  //   wsLink.subscriptionClient.tryReconnect();
-  // }
 
   render() {
     const { data: { loading, channelInfo }, match: { params: { channelId } } } = this.props;

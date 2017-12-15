@@ -1,9 +1,7 @@
 import React from 'react';
-import { graphql } from 'react-apollo';
 import { Icon } from 'semantic-ui-react';
 import ColumnHeaderWrapper from '../../layouts/ColumnHeaderWrapper';
 
-// import { ChannelInfoQuery } from '../queries';
 import ChannelInfo from './ChannelInfo';
 
 class RightHeader extends React.Component {
@@ -24,14 +22,5 @@ class RightHeader extends React.Component {
     );
   }
 }
-
-// export default graphql(ChannelInfoQuery, {
-//   options: ({ channelId }) => ({
-//     variables: {
-//       channelId,
-//     },
-//     fetchPolicy: 'network-only',
-//   }),
-// })(RightHeader);
 
 export default RightHeader;
