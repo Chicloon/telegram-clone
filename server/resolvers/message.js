@@ -16,13 +16,20 @@ export default {
     },
   },
   Query: {
-    channelMessages: requireAuth.createResolver(async (parent, { channelId }, { models }) => {
-      const messages = await models.Message.findAll(
-        { order: [['created_at', 'ASC']], where: { channelId } },
-        { raw: true },
-      );
-      // console.log(messages);
-      return messages;
+    channelMessages: requireAuth.createResolver(async (parent, { cursor, channelId }, { models }) => {
+      const options = {
+        order: [['created_at', 'DESC']],
+        where: { channelId },
+        limit: 35,
+      };
+
+      if (cursor) {
+        options.where.created_at = {
+          [models.op.lt]: cursor,
+        };
+      }
+
+      return models.Message.findAll(options, { raw: true });
     }),
     directMessages: requireAuth.createResolver(async (parent, { directMessageId }, { models }) => {
       const directMessages = await models.Message.findAll(

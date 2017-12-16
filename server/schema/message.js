@@ -9,7 +9,7 @@ export default `
   }
 
   type Query {
-    channelMessages(channelId: Int!): [Message!]!
+    channelMessages(channelId: Int!, cursor: String): [Message!]!
     directMessages(directMessageId: Int!): [Message!]!
   }
 

@@ -2,10 +2,11 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Comment } from 'semantic-ui-react';
+import { Comment, Button } from 'semantic-ui-react';
 
 import { ChannelMessagesQuery } from '../queries';
 import Message from './Message';
+import { setTimeout } from 'timers';
 
 const newChannelMessageSubscription = gql`
   subscription($channelId: Int!) {
@@ -22,22 +23,37 @@ const newChannelMessageSubscription = gql`
 `;
 
 class MessagesList extends React.Component {
+  state = {
+    hasMoreItems: true,
+  };
+
   componentWillMount() {
     this.unsubscribe = this.subscribe(this.props.channelId);
   }
 
-  componentWillReceiveProps({ channelId }) {
+  componentWillReceiveProps({ data: { channelMessages }, channelId }) {
+    console.log('props recived');
     if (this.props.channelId !== channelId) {
       if (this.unsubscribe) {
         this.unsubscribe();
       }
       this.unsubscribe = this.subscribe(channelId);
     }
-  }
 
-  componentDidUpdate() {
-    if (!this.props.data.loading) {
-      this.scrollToBottom();
+    if (
+      this.messageList &&
+      this.messageList.scrollTop < 100 &&
+      this.props.data.channelMessages &&
+      channelMessages &&
+      this.props.data.channelMessages.length !== channelMessages.length
+    ) {
+      const heightBeforeRender = this.messageList.scrollHeight;
+
+      setTimeout(() => {
+        if (this.messageList) {
+          this.messageList.scrollTop = this.messageList.scrollHeight - heightBeforeRender;
+        }
+      }, 120);
     }
   }
 
@@ -54,39 +70,91 @@ class MessagesList extends React.Component {
         channelId,
       },
       updateQuery: (prev, { subscriptionData }) => {
-        console.log(prev, subscriptionData);
         if (!subscriptionData) {
           return prev;
         }
 
         return {
           ...prev,
-          channelMessages: [...prev.channelMessages, subscriptionData.data.newChannelMessage],
+          channelMessages: [subscriptionData.data.newChannelMessage, ...prev.channelMessages],
         };
       },
     });
 
-  scrollToBottom() {
-    const { scrollHeight, clientHeight } = this.messageList;
-    const maxScrollTop = scrollHeight - clientHeight;
-    this.messageList.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
-  }
+  handleScroll = () => {
+    const { data: { channelMessages, fetchMore }, channelId } = this.props;
+    console.log(this.messageList.scrollTop, this.state.hasMoreItems, channelMessages.length);
+    if (
+      this.messageList &&
+      this.messageList.scrollTop < 100 &&
+      this.state.hasMoreItems &&
+      channelMessages.length >= 35
+    ) {
+      console.log(channelMessages[channelMessages.length - 1].created_at);
+      fetchMore({
+        variables: {
+          channelId,
+          cursor: channelMessages[channelMessages.length - 1].created_at,
+        },
+        updateQuery: (previousResult, { fetchMoreResult }) => {
+          console.log('previousResult, fetchMoreResult', previousResult, fetchMoreResult);
+          if (!fetchMoreResult) {
+            return previousResult;
+          }
+
+          if (fetchMoreResult.channelMessages.length < 35) {
+            this.setState({ hasMoreItems: false });
+          }
+
+          const res = {
+            ...previousResult,
+            channelMessages: [
+              ...previousResult.channelMessages,
+              ...fetchMoreResult.channelMessages,
+            ],
+          };
+          console.log('res', res);
+
+          // return res;
+
+          return {
+            ...previousResult,
+            channelMessages: [
+              ...previousResult.channelMessages,
+              ...fetchMoreResult.channelMessages,
+            ],
+          };
+        },
+      });
+    }
+  };
 
   render() {
     const { data: { loading, channelMessages } } = this.props;
-    return loading ? (
-      <div />
-    ) : (
+    return loading ? null : (
       <div
         ref={(div) => {
           this.messageList = div;
         }}
-        style={{ height: '1vh', overflow: 'auto' }}
+        style={{
+          height: '1vh',
+          overflow: 'auto',
+          display: 'flex',
+          flexDirection: 'column-reverse',
+        }}
+        // onScroll={this.handleScroll}
       >
         <Comment.Group>
-          {channelMessages.map(message => (
-            <Message key={`message-${message.id}`} message={message} />
-          ))}
+          {this.state.hasMoreItems ? (
+            <Button fluid onClick={this.handleScroll}>
+              load earlier messages
+            </Button>
+          ) : null}
+
+          {channelMessages
+            .slice()
+            .reverse()
+            .map(message => <Message key={`message-${message.id}`} message={message} />)}
         </Comment.Group>
       </div>
     );

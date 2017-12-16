@@ -32,8 +32,8 @@ export const UserChannelsQuery = gql`
 `;
 
 export const ChannelMessagesQuery = gql`
-  query($channelId: Int!) {
-    channelMessages(channelId: $channelId) {
+  query($cursor: String, $channelId: Int!) {
+    channelMessages(cursor: $cursor, channelId: $channelId) {
       id
       text
       created_at
