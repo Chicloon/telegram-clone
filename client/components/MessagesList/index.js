@@ -2,11 +2,10 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Comment, Button } from 'semantic-ui-react';
+import { Comment } from 'semantic-ui-react';
 
 import { ChannelMessagesQuery } from '../queries';
 import Message from './Message';
-import { setTimeout } from 'timers';
 
 const newChannelMessageSubscription = gql`
   subscription($channelId: Int!) {
@@ -32,7 +31,6 @@ class MessagesList extends React.Component {
   }
 
   componentWillReceiveProps({ data: { channelMessages }, channelId }) {
-    console.log('props recived');
     if (this.props.channelId !== channelId) {
       if (this.unsubscribe) {
         this.unsubscribe();
@@ -83,21 +81,18 @@ class MessagesList extends React.Component {
 
   handleScroll = () => {
     const { data: { channelMessages, fetchMore }, channelId } = this.props;
-    console.log(this.messageList.scrollTop, this.state.hasMoreItems, channelMessages.length);
     if (
       this.messageList &&
-      this.messageList.scrollTop < 100 &&
+      this.messageList.scrollTop === 0 &&
       this.state.hasMoreItems &&
       channelMessages.length >= 35
     ) {
-      console.log(channelMessages[channelMessages.length - 1].created_at);
       fetchMore({
         variables: {
           channelId,
           cursor: channelMessages[channelMessages.length - 1].created_at,
         },
         updateQuery: (previousResult, { fetchMoreResult }) => {
-          console.log('previousResult, fetchMoreResult', previousResult, fetchMoreResult);
           if (!fetchMoreResult) {
             return previousResult;
           }
@@ -105,17 +100,6 @@ class MessagesList extends React.Component {
           if (fetchMoreResult.channelMessages.length < 35) {
             this.setState({ hasMoreItems: false });
           }
-
-          const res = {
-            ...previousResult,
-            channelMessages: [
-              ...previousResult.channelMessages,
-              ...fetchMoreResult.channelMessages,
-            ],
-          };
-          console.log('res', res);
-
-          // return res;
 
           return {
             ...previousResult,
@@ -142,15 +126,9 @@ class MessagesList extends React.Component {
           display: 'flex',
           flexDirection: 'column-reverse',
         }}
-        // onScroll={this.handleScroll}
+        onScroll={this.handleScroll}
       >
         <Comment.Group>
-          {this.state.hasMoreItems ? (
-            <Button fluid onClick={this.handleScroll}>
-              load earlier messages
-            </Button>
-          ) : null}
-
           {channelMessages
             .slice()
             .reverse()
