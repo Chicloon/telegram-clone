@@ -4,7 +4,7 @@ import Yup from 'yup';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
 
 import normalizeErrors from '../normalizeErrors';
@@ -123,13 +123,12 @@ export default compose(
       if (ok) {
         localStorage.setItem('token', token);
         localStorage.setItem('refreshToken', refreshToken);
-        wsLink.subscriptionClient.tryReconnect();
+        // await wsLink.subscriptionClient.tryReconnect();
         setSubmitting(false);
         history.push('/');
-      } else {
-        setErrors(normalizeErrors(errors));
-        setSubmitting(false);
       }
+      setErrors(normalizeErrors(errors));
+      setSubmitting(false);
     },
   }),
 )(Login);

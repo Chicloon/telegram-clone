@@ -93,16 +93,19 @@ models.sequelize.sync({}).then(() => {
         schema,
         onConnect: async ({ token, refreshToken }, webSocket) => {
           console.log('*********** socket connected ***********');
+          console.log('====== users online', usersOnline);
           if (token && refreshToken) {
-            const { user } = await jwt.verify(token, SECRET);
-            if (usersOnline.indexOf(user.id) === -1) {
-              usersOnline.push(user.id);
-            }
-            console.log(user);
-            webSocket.id = user.id;
-            console.log(webSocket.id);
+            // const { user } = await jwt.verify(token, SECRET);
+            // if (usersOnline.indexOf(user.id) === -1) {
+            //   usersOnline.push(user.id);
+            // }
+            // console.log(user);
+
+            // console.log(webSocket.id);
             try {
-              // const { user } = await jwt.verify(token, SECRET);
+              const { user } = await jwt.verify(token, SECRET);
+              usersOnline.push(user.id);
+              webSocket.id = user.id;
               console.log('user on No error');
               console.log(user);
               return { models, user };
@@ -110,6 +113,8 @@ models.sequelize.sync({}).then(() => {
               const newTokens = await refreshTokens(token, refreshToken, models, SECRET, SECRET2);
               console.log('user on Error');
               console.log(newTokens.user);
+              usersOnline.push(newTokens.user.id);
+              webSocket.id = newTokens.user.id;
               return { models, user: newTokens.user };
             }
           }
@@ -117,7 +122,6 @@ models.sequelize.sync({}).then(() => {
           return { models };
         },
         onDisconnect: (webSocket) => {
-          // usersOnline.filter(e => e !== webSocket.id);
           _.remove(usersOnline, e => e === webSocket.id);
           console.log('====== users online', usersOnline);
           console.log('--------id onDisconnect', webSocket.id);
