@@ -57,8 +57,8 @@ export default {
             };
           }
           return {
-            channel,
             ok: true,
+            channel,
           };
         });
         return response;

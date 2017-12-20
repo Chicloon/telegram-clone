@@ -50,6 +50,7 @@ export default {
   Mutation: {
     createMessage: requireAuth.createResolver(async (parent, args, { models, user }) => {
       // createMessage: async (parent, args, { models, user }) => {
+      console.log('====create message args', args);
       try {
         // const message = await models.Message.create({ ...args, userId: user.id });
         const message = await models.Message.create({ ...args, userId: user.id });

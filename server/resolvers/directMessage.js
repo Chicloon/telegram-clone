@@ -8,7 +8,7 @@ const NEW_DIRECT_MESSAGE = 'NEW_DIRECT_MESSAGE';
 
 export default {
   DirectMessage: {
-    title: async ({ senderId, receiverId }, args, { models, user }) => {
+    title: requireAuth.createResolver(async ({ senderId, receiverId }, args, { models, user }) => {
       let title;
       if (user.id === senderId) {
         title = await models.User.findOne({ where: { id: receiverId } });
@@ -16,7 +16,9 @@ export default {
         title = user;
       }
       return title;
-    },
+    }),
+    messages: requireAuth.createResolver(async ({ id }, args, { models }) =>
+      models.Message.findAll({ where: { directmessage_id: id } })),
   },
   Subscription: {
     newcreateDirectMessage: {
@@ -29,7 +31,7 @@ export default {
     },
   },
   Query: {
-    directMessagesList: requireAuth.createResolver(async (parent, args, { user, models }) =>
+    usersDirectMessages: requireAuth.createResolver(async (parent, args, { user, models }) =>
       models.DirectMessage.findAll(
         {
           order: [['created_at', 'ASC']],
@@ -43,9 +45,19 @@ export default {
   Mutation: {
     createDirectMessage: async (parent, { receiverId }, { models, user }) => {
       try {
-        await models.DirectMessage.create({
+        const directMessage = await models.DirectMessage.create({
           receiverId,
           senderId: user.id,
+        });
+        pubsub.publish(NEW_DIRECT_MESSAGE, {
+          senderId: user.id,
+          receiverId,
+          newcreateDirectMessage: {
+            ...directMessage.dataValues,
+            sender: {
+              username: user.username,
+            },
+          },
         });
         return true;
       } catch (err) {
@@ -53,24 +65,24 @@ export default {
         return false;
       }
     },
-    //   createMessage: requireAuth.createResolver(async (parent, args, { models, user }) => {
-    //     try {
-    //       const directMessage = await models.DirectMessage.create({ ...args, senderId: user.id });
-    //       pubsub.publish(NEW_DIRECT_MESSAGE, {
-    //         senderId: user.id,
-    //         receiverId: args.receiverId,
-    //         newcreateDirectMessage: {
-    //           ...directMessage.dataValues,
-    //           sender: {
-    //             username: user.username,
-    //           },
+    // createMessage: requireAuth.createResolver(async (parent, { receiverId }, { models, user }) => {
+    //   try {
+    //     const directMessage = await models.DirectMessage.create({ receiverId, senderId: user.id });
+    //     pubsub.publish(NEW_DIRECT_MESSAGE, {
+    //       senderId: user.id,
+    //       receiverId,
+    //       newcreateDirectMessage: {
+    //         ...directMessage.dataValues,
+    //         sender: {
+    //           username: user.username,
     //         },
-    //       });
-    //       return true;
-    //     } catch (err) {
-    //       console.log(err);
-    //       return false;
-    //     }
-    //   }),
+    //       },
+    //     });
+    //     return true;
+    //   } catch (err) {
+    //     console.log(err);
+    //     return false;
+    //   }
+    // }),
   },
 };

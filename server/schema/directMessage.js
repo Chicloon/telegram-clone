@@ -9,7 +9,8 @@ type DirectMessage {
 }
 
 type Query {
-  directMessagesList: [DirectMessage!]!
+  usersDirectMessages: [DirectMessage!]!
+  directMessage(directMessageId: Int!): [DirectMessage!]!
 }
 
 type Mutation {  
@@ -17,7 +18,7 @@ type Mutation {
 }
 
 type Subscription {
-  newcreateDirectMessage(receiverId: Int!): DirectMessage!
+  newcreateDirectMessage: DirectMessage!
 }
 
 `;
