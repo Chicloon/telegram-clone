@@ -1,5 +1,5 @@
 import 'semantic-ui-css/semantic.min.css';
-import React, { Component } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import decode from 'jwt-decode';
 
@@ -17,12 +17,14 @@ const isAuthenticated = () => {
     decode(token);
     const { exp } = decode(refreshToken);
     if (Date.now() / 1000 > exp) {
+      console.log('token expired');
       return false;
     }
   } catch (err) {
+    console.log('wrong token');
     return false;
   }
-
+  console.log('token valid');
   return true;
 };
 const PrivateRoute = ({ component: Component, ...rest }) => (
@@ -42,7 +44,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   />
 );
 
-class App extends Component {
+class App extends React.Component {
   render() {
     return (
       <Router>
