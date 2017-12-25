@@ -121,7 +121,6 @@ class MessagesList extends React.Component {
           this.messageList = div;
         }}
         style={{
-          height: '1vh',
           overflow: 'auto',
           display: 'flex',
           flexDirection: 'column-reverse',

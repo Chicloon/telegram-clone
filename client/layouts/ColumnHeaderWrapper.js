@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export default styled.div`
   background: #5682a3;
   color: white;
-  height: 48px;
+  min-height: 48px;
   padding: 0;
   flex-grow: 0 !important;
   flex-direction: row !important;

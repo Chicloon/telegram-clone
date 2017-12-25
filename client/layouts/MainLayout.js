@@ -33,9 +33,12 @@ const MainLayout = (props) => {
               overflow: 'hidden',
             }}
           >
-            <LeftColumn history={props.history} />
-
-            {props.children}
+            <Grid.Column width={5} style={{ padding: 0 }}>
+              <LeftColumn history={props.history} />
+            </Grid.Column>
+            <Grid.Column width={11} style={{ padding: 0 }}>
+              {props.children}
+            </Grid.Column>
           </Grid.Row>
         </Grid>
       </Container>

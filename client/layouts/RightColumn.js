@@ -37,11 +37,11 @@ class RightColumn extends React.Component {
     }
 
     return (
-      <Grid.Column width={11} style={{ padding: 0 }}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <RightHeader channelId={channelId} />
         {channelInfo && <MessagesList channelId={channelId} />}
         {channelInfo && <SendMessage channelId={channelId} />}
-      </Grid.Column>
+      </div>
     );
   }
 }

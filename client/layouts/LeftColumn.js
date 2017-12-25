@@ -44,7 +44,7 @@ class LeftComumn extends React.Component {
     // console.log(this.props);
     if (loading) return <div />;
     return (
-      <Grid.Column width={5} style={{ padding: 0 }}>
+      <div>
         <div>
           <ColumnHeaderWrapper>
             {showMenu && (
@@ -77,7 +77,7 @@ class LeftComumn extends React.Component {
           </div>
         </div>
         <CreateChannelModal onClose={this.newChannelModalTrigger} open={newChannelModal} />
-      </Grid.Column>
+      </div>
     );
   }
 }
