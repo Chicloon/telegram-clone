@@ -32,9 +32,9 @@ class RightColumn extends React.Component {
   render() {
     const { data: { loading, channelInfo }, match: { params: { channelId } } } = this.props;
 
-    if (!loading && !channelInfo) {
-      return <Redirect to="/" />;
-    }
+    // if (!loading && !channelInfo) {
+    //   return <Redirect to="/login" />;
+    // }
 
     return (
       <div style={{ display: 'flex', flexDirection: 'column' }}>

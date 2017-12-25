@@ -124,6 +124,7 @@ class MessagesList extends React.Component {
           overflow: 'auto',
           display: 'flex',
           flexDirection: 'column-reverse',
+          flexGrow: 1,
         }}
         onScroll={this.handleScroll}
       >

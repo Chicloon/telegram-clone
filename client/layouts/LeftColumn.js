@@ -41,7 +41,7 @@ class LeftComumn extends React.Component {
   render() {
     const { showMenu, newChannelModal } = this.state;
     const { data: { loading, me } } = this.props;
-    // console.log(this.props);
+    console.log(this.props);
     if (loading) return <div />;
     return (
       <div>

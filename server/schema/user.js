@@ -5,6 +5,7 @@ export default `
     username: String!
     email: String!   
     channels: [Channel!]!
+    directMessages: Boolean!
   }
 
   type Query {

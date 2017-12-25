@@ -9,6 +9,7 @@ export const MeQuerry = gql`
         id
         name
       }
+      directMessages
     }
   }
 `;

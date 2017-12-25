@@ -17,6 +17,27 @@ export default {
       );
       return channels;
     }),
+    directMessages: requiresAuth.createResolver(async (parent, args, { user, models }) => {
+      try {
+        const directMessages = await models.DirectMessage.findAll(
+          {
+            order: [['created_at', 'ASC']],
+            where: {
+              [models.sequelize.Op.or]: [{ receiverId: user.id }, { senderId: user.id }],
+            },
+          },
+          { raw: true },
+        );
+        console.log(directMessages);
+        if (directMessages.lenght > 0) {
+          return true;
+        }
+        return false;
+      } catch (err) {
+        console.log(err);
+        return false;
+      }
+    }),
   },
   Query: {
     getUser: (parent, { id }, { models }) => models.User.findOne({ where: { id } }),
