@@ -1,12 +1,15 @@
 import React from 'react';
-import { Grid, Input, Icon } from 'semantic-ui-react';
-import { withRouter } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import { graphql } from 'react-apollo';
 
+import { Grid, Input, Icon } from 'semantic-ui-react';
 import ColumnHeaderWrapper from './ColumnHeaderWrapper';
 import ChannelsList from '../components/ChannelsList/';
 import LeftMenu from './LeftMenu';
 import CreateChannelModal from '../components/MenuModals/CreateChannelModal';
+
+import { MeQuerry } from '../components/queries';
 
 const LeftHeader = styled.div`
   align-self: center;
@@ -37,7 +40,9 @@ class LeftComumn extends React.Component {
 
   render() {
     const { showMenu, newChannelModal } = this.state;
-    const { channels } = this.props;
+    const { data: { loading, me } } = this.props;
+    // console.log(this.props);
+    if (loading) return <div />;
     return (
       <Grid.Column width={5} style={{ padding: 0 }}>
         <div>
@@ -68,7 +73,7 @@ class LeftComumn extends React.Component {
               <Icon name="search" flipped="horizontally" style={{ left: 'auto' }} />
               <input style={{ background: '#F2F2F2' }} />
             </Input>
-            <ChannelsList channels={channels} />
+            <ChannelsList channels={me.channels} />
           </div>
         </div>
         <CreateChannelModal onClose={this.newChannelModalTrigger} open={newChannelModal} />
@@ -76,5 +81,8 @@ class LeftComumn extends React.Component {
     );
   }
 }
-
-export default withRouter(LeftComumn);
+export default graphql(MeQuerry, {
+  options: {
+    fetchPolicy: 'network-only',
+  },
+})(LeftComumn);

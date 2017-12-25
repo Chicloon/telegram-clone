@@ -6,7 +6,7 @@ const Channel = ({ channel }) => {
   const { id, name, lastMessage } = channel;
 
   return (
-    <Link to={`/${id}`}>
+    <Link to={`/channels/${id}`}>
       <Comment style={{ padding: '7px 12px' }}>
         <Comment.Content>
           <Comment.Author as="span">{name}</Comment.Author>

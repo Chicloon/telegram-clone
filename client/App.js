@@ -52,8 +52,8 @@ class App extends React.Component {
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={SignUp} />
           <MainLayout>
-            <PrivateRoute path="/" exact component={ChatList} />
-            <PrivateRoute path="/:channelId" exact component={RightColumn} />
+            <PrivateRoute path="/channels" exact component={ChatList} />
+            <PrivateRoute path="/channels/:channelId" exact component={RightColumn} />
           </MainLayout>
         </Switch>
       </Router>

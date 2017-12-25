@@ -88,7 +88,7 @@ class SignUp extends React.Component {
               </Message>
             )}
             <Message>
-              Have account? <Link to="/">Sign Up</Link>
+              Have account? <Link to="/login">Log In</Link>
             </Message>
           </Grid.Column>
         </Grid>
