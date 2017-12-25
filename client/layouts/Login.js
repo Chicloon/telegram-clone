@@ -125,7 +125,7 @@ export default compose(
         localStorage.setItem('refreshToken', refreshToken);
         // await wsLink.subscriptionClient.tryReconnect();
         setSubmitting(false);
-        history.push('/');
+        history.push('/channels');
       }
       setErrors(normalizeErrors(errors));
       setSubmitting(false);

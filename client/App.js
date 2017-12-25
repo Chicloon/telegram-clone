@@ -49,6 +49,7 @@ class App extends React.Component {
     return (
       <Router>
         <Switch>
+          <Redirect from="/" exact to="/channels" />
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={SignUp} />
           <MainLayout>
