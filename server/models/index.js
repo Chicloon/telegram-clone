@@ -10,16 +10,6 @@ const sequelize = new Sequelize('telegram', 'efim', '123', {
   },
 });
 
-// const sequelize = new Sequelize('telegram', 'postgres', 'postgres', {
-//   dialect: 'postgres',
-//   host: 'localhost',
-//   port: 5433,
-//   operatorsAliases: Sequelize.Op,
-//   define: {
-//     underscored: true,
-//   },
-// });
-
 const models = {
   User: sequelize.import('./user'),
   Channel: sequelize.import('./channel'),

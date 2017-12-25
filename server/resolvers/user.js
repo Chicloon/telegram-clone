@@ -29,7 +29,7 @@ export default {
           { raw: true },
         );
         console.log(directMessages);
-        if (directMessages.lenght > 0) {
+        if (directMessages.length > 0) {
           return true;
         }
         return false;
