@@ -10,11 +10,11 @@ type DirectMessage {
 
 type Query {
   usersDirectMessages: [DirectMessage!]!
-  directMessage(directMessageId: Int!): [DirectMessage!]!
+  #directMessage(directMessageId: Int!): [DirectMessage!]!
 }
 
 type Mutation {  
-  createDirectMessage(receiverId: Int!): Boolean!
+  createDirectMessage(receiverId: Int!): Int!
 }
 
 type Subscription {

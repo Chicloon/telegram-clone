@@ -9,7 +9,9 @@ export const MeQuerry = gql`
         id
         name
       }
-      directMessages
+      directMessages {
+        id
+      }
     }
   }
 `;
@@ -51,6 +53,18 @@ export const ChannelInfoQuery = gql`
     channelInfo(channelId: $channelId) {
       id
       name
+    }
+  }
+`;
+
+export const UsersDirectMessagesQuery = gql`
+  {
+    usersDirectMessages {
+      id
+      title {
+        id
+        username
+      }
     }
   }
 `;

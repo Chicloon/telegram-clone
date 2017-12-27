@@ -25,44 +25,39 @@ const AuthorMenuWrapper = styled.div`
   }
 `;
 
-const AuthorMenu = props => (
-  <AuthorMenuWrapper>
-    <p
-      key="1st"
-      onClick={() => {
-        console.log('clicked menu item');
-      }}
-    >
-      asdfasdf
-    </p>
-    <p key="2nd"> asdfasdf </p>
-    <p key="3rd"> asdfasdf </p>
-  </AuthorMenuWrapper>
-);
-
 class MessageAuthor extends React.Component {
   state = {
     showMenu: false,
   };
 
+  renderAuthorMenu = () => (
+    <AuthorMenuWrapper>
+      <p
+        onClick={() => {
+          console.log('clicked menu item');
+        }}
+      >
+        Send direct message
+      </p>
+    </AuthorMenuWrapper>
+  );
+
   render() {
-    const { username, id, created_at } = this.props;
+    const { username } = this.props;
     const { showMenu } = this.state;
     return (
       // eslint-disable-next-line
       <div
         style={{ cursor: 'pointer' }}
         onClick={() => {
-          console.log('click');
           this.setState({ showMenu: true });
         }}
         onMouseLeave={() => {
-          console.log('out');
           this.setState({ showMenu: false });
         }}
       >
         {username}
-        {showMenu && <AuthorMenu />}
+        {showMenu && this.renderAuthorMenu()}
       </div>
     );
   }

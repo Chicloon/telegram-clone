@@ -45,10 +45,17 @@ export default {
   Mutation: {
     createDirectMessage: async (parent, { receiverId }, { models, user }) => {
       try {
-        const directMessage = await models.DirectMessage.create({
-          receiverId,
-          senderId: user.id,
-        });
+        const directMessage = await models.DirectMessage.findOrCreate({
+          where: {
+            [models.sequelize.Op.or]: [{ receiverId: user.id }, { senderId: user.id }],
+          },
+          defaults: {
+            receiverId,
+            senderId: user.id,
+          },
+        },
+          // { raw: true },
+        );
         pubsub.publish(NEW_DIRECT_MESSAGE, {
           senderId: user.id,
           receiverId,
@@ -59,7 +66,7 @@ export default {
             },
           },
         });
-        return true;
+        return directMessage[0].id;
       } catch (err) {
         console.log(err);
         return false;

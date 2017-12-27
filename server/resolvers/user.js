@@ -29,10 +29,11 @@ export default {
           { raw: true },
         );
         console.log(directMessages);
-        if (directMessages.length > 0) {
-          return true;
-        }
-        return false;
+        console.log(directMessages.id);
+        // if (directMessages.length > 0) {
+        //   return true;
+        // }
+        return directMessages;
       } catch (err) {
         console.log(err);
         return false;

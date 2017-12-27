@@ -73,7 +73,7 @@ class LeftComumn extends React.Component {
               <Icon name="search" flipped="horizontally" style={{ left: 'auto' }} />
               <input style={{ background: '#F2F2F2' }} />
             </Input>
-            <ChannelsList channels={me.channels} />
+            <ChannelsList me={me} />
           </div>
         </div>
         <CreateChannelModal onClose={this.newChannelModalTrigger} open={newChannelModal} />
