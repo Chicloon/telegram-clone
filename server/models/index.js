@@ -10,10 +10,10 @@ import Sequelize from 'sequelize';
 //   },
 // });
 
-const sequelize = new Sequelize('telegram', 'postgres', 'postgres', {
+const sequelize = new Sequelize('telegram_old', 'postgres', 'postgres', {
   dialect: 'postgres',
   host: 'localhost',
-  port: 5433,
+  port: 5432,
   operatorsAliases: Sequelize.Op,
   define: {
     underscored: true,

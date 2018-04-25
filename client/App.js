@@ -22,7 +22,7 @@ const isAuthenticated = () => {
   } catch (err) {
     return false;
   }
-
+//
   return true;
 };
 const PrivateRoute = ({ component: Component, ...rest }) => (
